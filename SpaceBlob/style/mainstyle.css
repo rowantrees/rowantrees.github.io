@@ -35,7 +35,7 @@ body {
 	position:relative;
 	overflow:hidden;
 	height:100%;
-	width:100%
+	width:inherit;
 }
 
 #drawOrigin {
@@ -54,6 +54,7 @@ body {
 }
 
 #upgradeBar {
+	padding-top:30px;
 	position:relative;
 	right:0;
 	height:100%;
