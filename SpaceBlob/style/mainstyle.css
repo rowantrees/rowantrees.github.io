@@ -7,7 +7,7 @@ body {
 	margin:0;
 }
 
-.mainContainer {
+#mainContainer {
 	display:block;
 	margin:auto;
 	height:100%;
@@ -15,7 +15,7 @@ body {
 	border:3px;
 }
 
-.playSpace {
+#playSpace {
 	background-color:grey;
 	position:relative;
 	overflow:hidden;
@@ -23,12 +23,12 @@ body {
 	width:100%
 }
 
-.drawOrigin {
+#drawOrigin {
 	position:relative;
 	height:100%;
 }
 
-.viewBar {
+#viewBar {
 	position:fixed;
 	bottom:0;
 	height:30px;
@@ -38,7 +38,7 @@ body {
 	display:block;
 }
 
-.upgradeBar {
+#upgradeBar {
 	position:fixed;
 	right:0;
 	height:100%;
@@ -48,7 +48,7 @@ body {
 	display:block;
 }
 
-.controlPanel {
+#controlPanel {
 	 position:fixed;
 	 bottom:30px;
 	 height:210px;
