@@ -55,10 +55,10 @@ body {
 
 #upgradeBar {
 	padding-top:30px;
-	position:relative;
+	position:absolute;
 	right:0;
 	height:100%;
-	width:100px;
+	width:150px;
 	background-color:#444444;
 	z-index:999;
 	display:block;
