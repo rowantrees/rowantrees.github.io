@@ -1,0 +1,60 @@
+body {
+	font-family:Arial, Helvetica;
+	color:black;
+	font-size:20px;
+	background-color:black;
+	height:100%;
+	margin:0;
+}
+
+.mainContainer {
+	display:block;
+	margin:auto;
+	height:100%;
+	width:900px;
+	border:3px;
+}
+
+.playSpace {
+	background-color:grey;
+	position:relative;
+	overflow:hidden;
+	height:100%;
+	width:100%
+}
+
+.drawOrigin {
+	position:relative;
+	height:100%;
+}
+
+.viewBar {
+	position:fixed;
+	bottom:0;
+	height:30px;
+	width:100%;
+	background-color:#444444;
+	z-index:999;
+	display:block;
+}
+
+.upgradeBar {
+	position:fixed;
+	right:0;
+	height:100%;
+	width:100px;
+	background-color:#444444;
+	z-index:999;
+	display:block;
+}
+
+.controlPanel {
+	 position:fixed;
+	 bottom:30px;
+	 height:210px;
+	 width:100%;
+	 background-color:#777777;
+	 z-index:999;
+	 display:none;
+	 overflow:auto;
+}
