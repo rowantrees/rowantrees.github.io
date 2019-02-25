@@ -22,6 +22,26 @@ body {
 	
 }
 
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+	width: 34px;
+    padding: 0;
+    text-align: center;
+}
+
+.newRow {
+	height:35px;
+	display:table;
+	
+}
+
+
 #mainContainer {
 	display:block;
 	margin:auto;
