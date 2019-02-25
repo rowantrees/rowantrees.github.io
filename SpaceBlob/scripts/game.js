@@ -36,7 +36,7 @@ var Board = function (_React$Component) {
     key: "handleClick",
     value: function handleClick(i) {
       var squares = this.state.squares.slice();
-      squares[i] += 1;
+      squares[i] += Math.trunc(1);
       this.setState({ squares: squares });
     }
   }, {
@@ -72,20 +72,31 @@ var Board = function (_React$Component) {
       return board;
     }
   }, {
+    key: "updateTick",
+    value: function updateTick() {}
+  }, {
     key: "render",
     value: function render() {
-      var status = 'Next player: X';
 
       return React.createElement(
         "div",
         null,
-        React.createElement(
-          "div",
-          { className: "status" },
-          status
-        ),
         this.renderBoard()
       );
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      this.interval = setInterval(function () {
+        _this3.handleClick(4);
+      }, 1000);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearInterval(this.interval);
     }
   }]);
 
