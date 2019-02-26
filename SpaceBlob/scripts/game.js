@@ -6,134 +6,147 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CELL_SIZE = 34;
-var WIDTH = 800;
-var HEIGHT = 600;
-
 function Square(props) {
-  return React.createElement(
-    "button",
-    { className: "square", onClick: props.onClick },
-    props.value
-  );
+	return React.createElement(
+		"button",
+		{ className: "square", onClick: props.onClick },
+		props.value
+	);
 }
 
 var Board = function (_React$Component) {
-  _inherits(Board, _React$Component);
+	_inherits(Board, _React$Component);
 
-  function Board(props) {
-    _classCallCheck(this, Board);
+	function Board(props) {
+		_classCallCheck(this, Board);
 
-    var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
-    _this.state = {
-      squares: Array(9).fill(0)
-    };
-    return _this;
-  }
+		_this.universe1 = new Universe(UNIVERSEONEPLANETS);
 
-  _createClass(Board, [{
-    key: "handleClick",
-    value: function handleClick(i) {
-      var squares = this.state.squares.slice();
-      squares[i] += Math.trunc(1);
-      this.setState({ squares: squares });
-    }
-  }, {
-    key: "renderSquare",
-    value: function renderSquare(i) {
-      var _this2 = this;
+		console.log(_this.universe1);
+		_this.state = {
+			squares: _this.initializeUniverse(_this.universe1)
+		};
+		return _this;
+	}
 
-      return React.createElement(Square, { key: i,
-        value: this.state.squares[i],
-        onClick: function onClick() {
-          return _this2.handleClick(i);
-        }
-      });
-    }
-  }, {
-    key: "renderBoard",
-    value: function renderBoard() {
+	_createClass(Board, [{
+		key: "initializeUniverse",
+		value: function initializeUniverse(curVerse) {
+			var universeSize = curVerse.getLocation(0);
 
-      var board = [];
-      var rows = 3;
-      var cols = 3;
-      for (var i = 0; i < rows; i++) {
-        var curRow = [];
-        for (var j = 0; j < cols; j++) {
-          curRow[j] = this.renderSquare(j + cols * i);
-        }
-        board.push(React.createElement(
-          "div",
-          { className: "newRow" },
-          curRow
-        ));
-      }
-      return board;
-    }
-  }, {
-    key: "updateTick",
-    value: function updateTick() {}
-  }, {
-    key: "render",
-    value: function render() {
+			var newSquares = Array(universeSize.x * universeSize.y).fill(null);
+			for (var i = 1; i < curVerse.getSize(); i++) {
+				var loc = curVerse.getLocation(i);
+				var arrIndex = loc.x + loc.y * universeSize.y;
+				console.log(arrIndex);
+				newSquares[arrIndex] = 10;
+			}
+			return newSquares;
+		}
+	}, {
+		key: "handleClick",
+		value: function handleClick(i) {
+			var squares = this.state.squares.slice();
+			squares[i] += 1;
+			this.setState({ squares: squares });
+		}
+	}, {
+		key: "renderSquare",
+		value: function renderSquare(i) {
+			var _this2 = this;
 
-      return React.createElement(
-        "div",
-        null,
-        this.renderBoard()
-      );
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this3 = this;
+			return React.createElement(Square, { key: i,
+				value: this.state.squares[i],
+				onClick: function onClick() {
+					return _this2.handleClick(i);
+				}
+			});
+		}
+	}, {
+		key: "renderBoard",
+		value: function renderBoard() {
 
-      this.interval = setInterval(function () {
-        _this3.handleClick(4);
-      }, 1000);
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      clearInterval(this.interval);
-    }
-  }]);
+			var board = [];
+			var rows = 3;
+			var cols = 3;
+			for (var i = 0; i < rows; i++) {
+				var curRow = [];
+				for (var j = 0; j < cols; j++) {
+					curRow[j] = this.renderSquare(j + cols * i);
+				}
+				board.push(React.createElement(
+					"div",
+					{ className: "newRow" },
+					curRow
+				));
+			}
+			return board;
+		}
+	}, {
+		key: "updateTick",
+		value: function updateTick() {}
+	}, {
+		key: "render",
+		value: function render() {
 
-  return Board;
+			return React.createElement(
+				"div",
+				null,
+				this.renderBoard()
+			);
+		}
+	}, {
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			var _this3 = this;
+
+			this.interval = setInterval(function () {
+				_this3.handleClick(4);
+			}, 1000);
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			clearInterval(this.interval);
+		}
+	}]);
+
+	return Board;
 }(React.Component);
 
 var Game = function (_React$Component2) {
-  _inherits(Game, _React$Component2);
+	_inherits(Game, _React$Component2);
 
-  function Game() {
-    _classCallCheck(this, Game);
+	function Game() {
+		_classCallCheck(this, Game);
 
-    return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
-  }
+		return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
+	}
 
-  _createClass(Game, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "div",
-        { className: "game" },
-        React.createElement(
-          "div",
-          { className: "game-board" },
-          React.createElement(Board, null)
-        ),
-        React.createElement(
-          "div",
-          { className: "game-info" },
-          React.createElement("div", null),
-          React.createElement("ol", null)
-        )
-      );
-    }
-  }]);
+	_createClass(Game, [{
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				"div",
+				{ className: "game" },
+				React.createElement(
+					"div",
+					{ className: "game-board" },
+					React.createElement(Board, null)
+				),
+				React.createElement(
+					"div",
+					{ className: "game-info" },
+					React.createElement("div", null),
+					React.createElement("ol", null)
+				)
+			);
+		}
+	}]);
 
-  return Game;
+	return Game;
 }(React.Component);
 
 // ========================================
