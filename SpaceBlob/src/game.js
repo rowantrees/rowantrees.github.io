@@ -13,10 +13,12 @@ class Board extends React.Component {
     super(props);
 	this.universe1 = new Universe(UNIVERSEONEPLANETS);
 	
-	console.log(this.universe1);
+
     this.state = {
       squares: this.initializeUniverse(this.universe1),
+
     };
+	console.log(this.state.squares.length);
   }
 
   initializeUniverse(curVerse){
@@ -25,8 +27,7 @@ class Board extends React.Component {
 	let newSquares = Array(universeSize.x*universeSize.y).fill(null);
 	for (let i=1;i<curVerse.getSize();i++) {
 		let loc = curVerse.getLocation(i);
-		let arrIndex = loc.x +(loc.y * universeSize.y);
-			console.log(arrIndex);
+		let arrIndex = loc.x +(loc.y * universeSize.x);
 		newSquares[arrIndex] = 10;
 	}
 	return newSquares;
@@ -47,15 +48,13 @@ class Board extends React.Component {
     );
   }
 	
-	renderBoard() {
-
+	renderBoard(curVerse) {
+		let universeSize = curVerse.getLocation(0);
 		let board = [];
-		let rows = 3;
-		let cols = 3;
-		for (let i = 0;i<rows;i++) {
+		for (let i = 0;i<universeSize.y;i++) {
 			let curRow = [];
-			for (let j = 0;j<cols;j++){
-				curRow[j] = this.renderSquare(j+cols*i);
+			for (let j = 0;j<universeSize.x;j++){
+				curRow[j] = this.renderSquare(j+universeSize.x*i);
 			}
 			board.push(<div className="newRow">{curRow}</div>);
 		}
@@ -68,7 +67,7 @@ class Board extends React.Component {
 
     return (
 		<div>
-			{this.renderBoard()}
+			{this.renderBoard(this.universe1)}
 		</div>
     );
   }

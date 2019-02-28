@@ -24,10 +24,11 @@ var Board = function (_React$Component) {
 
 		_this.universe1 = new Universe(UNIVERSEONEPLANETS);
 
-		console.log(_this.universe1);
 		_this.state = {
 			squares: _this.initializeUniverse(_this.universe1)
+
 		};
+		console.log(_this.state.squares.length);
 		return _this;
 	}
 
@@ -39,8 +40,7 @@ var Board = function (_React$Component) {
 			var newSquares = Array(universeSize.x * universeSize.y).fill(null);
 			for (var i = 1; i < curVerse.getSize(); i++) {
 				var loc = curVerse.getLocation(i);
-				var arrIndex = loc.x + loc.y * universeSize.y;
-				console.log(arrIndex);
+				var arrIndex = loc.x + loc.y * universeSize.x;
 				newSquares[arrIndex] = 10;
 			}
 			return newSquares;
@@ -66,15 +66,13 @@ var Board = function (_React$Component) {
 		}
 	}, {
 		key: "renderBoard",
-		value: function renderBoard() {
-
+		value: function renderBoard(curVerse) {
+			var universeSize = curVerse.getLocation(0);
 			var board = [];
-			var rows = 3;
-			var cols = 3;
-			for (var i = 0; i < rows; i++) {
+			for (var i = 0; i < universeSize.y; i++) {
 				var curRow = [];
-				for (var j = 0; j < cols; j++) {
-					curRow[j] = this.renderSquare(j + cols * i);
+				for (var j = 0; j < universeSize.x; j++) {
+					curRow[j] = this.renderSquare(j + universeSize.x * i);
 				}
 				board.push(React.createElement(
 					"div",
@@ -94,7 +92,7 @@ var Board = function (_React$Component) {
 			return React.createElement(
 				"div",
 				null,
-				this.renderBoard()
+				this.renderBoard(this.universe1)
 			);
 		}
 	}, {
