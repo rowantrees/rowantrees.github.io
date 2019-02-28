@@ -16,7 +16,7 @@ class Board extends React.Component {
 
     this.state = {
       squares: this.initializeUniverse(this.universe1),
-
+	  generators: this.initializeGenerators
     };
 	console.log(this.state.squares.length);
   }

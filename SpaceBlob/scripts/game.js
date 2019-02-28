@@ -25,8 +25,8 @@ var Board = function (_React$Component) {
 		_this.universe1 = new Universe(UNIVERSEONEPLANETS);
 
 		_this.state = {
-			squares: _this.initializeUniverse(_this.universe1)
-
+			squares: _this.initializeUniverse(_this.universe1),
+			generators: _this.initializeGenerators
 		};
 		console.log(_this.state.squares.length);
 		return _this;
