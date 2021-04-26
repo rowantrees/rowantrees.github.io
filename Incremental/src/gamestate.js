@@ -18,7 +18,7 @@ const gameState = {
 	},
 
 	generate: function() {
-		for (let i=0, i<this.generators.length, i++) {
+		for (let i=0; i<this.generators.length; i++) {
 			if (i === 0) {
 				this.score += this.generators[i] * this.genMulti[i];
 			}
