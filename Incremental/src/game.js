@@ -1,4 +1,4 @@
-gameState = {
+const gameState = {
 	speed: 1000,
 	width: 1060,
 	height: 800,
