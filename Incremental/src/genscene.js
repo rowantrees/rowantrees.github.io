@@ -1,7 +1,6 @@
-class genScene extends Phaser.Scene {
-	constructor(key) {
-		super(key);
-		this.sceneKey = key;
+class GenScene extends Phaser.Scene {
+	constructor() {
+		super({ key: 'GenScene' });
 	}
 
 	preload() {

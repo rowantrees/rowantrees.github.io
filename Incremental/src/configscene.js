@@ -1,7 +1,6 @@
-class configScene extends Phaser.Scene {
-	constructor(key) {
-		super(key);
-		this.sceneKey = key;
+class ConfigScene extends Phaser.Scene {
+	constructor() {
+		super({ key: 'ConfigScene' });
 	}
 
 	preload() {

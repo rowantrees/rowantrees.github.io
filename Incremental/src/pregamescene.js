@@ -1,7 +1,6 @@
-class pregameScene extends Phaser.Scene {
-	constructor(key) {
-		super(key);
-		this.sceneKey = key;
+class PregameScene extends Phaser.Scene {
+	constructor() {
+		super({ key: 'PregameScene' });
 	}
 
 	preload() {
