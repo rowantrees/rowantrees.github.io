@@ -1,0 +1,40 @@
+<!-- while waiting for classes... -->
+<div ng-if="requestingclassdata" class="font-weight-light pb-4"><i class="fas fa-spinner fa-pulse mr-2"></i>Loading classes...</div>
+
+<!-- once classes are returned -->
+<div ng-if="!requestingclassdata">
+  <div class="h4 mb-4 font-weight-bold" ng-class="'text-' + brandColor">Class Registration</div>
+
+  <!-- if zero classes are returned once request is complete -->
+  <div ng-show="classes.length == 0" class="font-weight-light">No classes found</div>
+
+  <!-- if one or more classes are returned -->
+  <div ng-show="classes.length > 0">
+    <div>
+      <div class="pb-5" ng-repeat="daygroup in [ {short:'mon',long:'Monday'},{short:'tue',long:'Tuesday'},{short:'wed',long:'Wednesday'},{short:'thu',long:'Thursday'},{short:'fri',long:'Friday'},{short:'sat',long:'Saturday'},{short:'sun',long:'Sunday'} ]">
+        <div ng-show="results.length > 0" class="h5 mb-4">{{ daygroup.long }} Classes</div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          <div class="col" ng-repeat="class in results = (classes | orderBy:['min_age','start_date'] | filter:subfilter | dayFilter:daygroup.short)">
+            <div class="card shadow h-100">
+              <div class="card-body">
+                <h5 ng-if="class.name" ng-class="'text-' + brandColor">{{class.name}}</h5>
+                <div ng-if="class.description" class="small fw-light" ng-bind-html="class.description | to_trusted"></div>
+                <div ng-if="class.start_date">{{class.start_date | date:'mediumDate'}} - {{class.end_date | date:'mediumDate'}}</div>
+                <div ng-if="class.min_age">Ages {{class.min_age}} - {{class.max_age}}</div>
+                <div ng-if="class.meeting_days.daylist" class="text-capitalize"><span ng-repeat="day in class.meeting_days.daylist">{{day}} </span><span>{{class.start_time}} - {{class.end_time}}</span></div>
+                <div ng-if="class.tuition.fee">{{ class.tuition.fee | currency:'$':2 }}</div>
+                <div>
+                  <div ng-if="!class.online_reg_link" class="pt-2 small fw-light">Contact us to register</div>
+                  <a ng-if="class.online_reg_link" ng-href="{{class.online_reg_link}}" target="_blank" ng-class="'text-' + brandColor">
+                    <span ng-if="class.openings.calculated_openings > 0">Register</span>
+                    <span ng-if="class.openings.calculated_openings <= 0">Wait List</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

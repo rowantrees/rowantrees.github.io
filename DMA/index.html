@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="MainController">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="./img/kicker.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="./scss/theme.css" type="text/css" rel="Stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js" integrity="sha512-OboE6z4eMJ4Z58c77mLjwOChLo1ZoGMdBTd2ggt0PyheD8irXxmQBCqZkLPlz/rNC1f9kPsDuHRNuL2HKkm9FA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/app-w-classes.js"></script>
+    <title>Determination Martial Arts</title>
+  </head>
+  <body ng-cloak>
+
+    <!-- banner include -->
+    <div ng-include src="'./banner.html'"></div>
+
+    <div class="content-wrapper">
+      <div class="body">
+        <div class="container">
+          <div class="h2 text-secondary">Welcome!</div>
+          
+          <div class="row g-5">
+            <div class="col-12 col-md-8">
+              <div class="fw-light">Lorem ipsum dolor sit amet. Et optio dolorem eum quam galisum est inventore nesciunt et incidunt nulla. Et beatae mollitia sed soluta rerum qui cumque corrupti vel voluptatem ipsa sed nobis tenetur sit molestiae nobis.</div>
+              <div class="py-4">
+                <a href="./classlist.html" class=" btn btn-lg btn-primary text-white text-uppercase">Go To Class List</a>
+              </div>
+              <div class="fw-light">
+                <p>Lorem ipsum dolor sit amet. Eum repudiandae sint eum sunt excepturi in esse molestiae et internos aliquam est consectetur sint qui iste consequatur aut autem reprehenderit. Id eius aspernatur qui dolor autem et facere voluptatem qui explicabo soluta non consectetur exercitationem ad ratione dignissimos. Et provident aspernatur et voluptas similique in labore sint. Et voluptatem alias sit nobis molestiae est dolorem nobis in fugiat maxime. Et quam fugit qui nesciunt commodi est consequatur architecto 33 voluptatem quisquam et natus itaque.</p>
+                <p>Ut enim galisum ut doloremque tempore quo perferendis blanditiis et autem sint. Vel mollitia totam aut nulla nostrum vel dolores nobis qui eligendi internos qui itaque inventore non fugit consequuntur et quia impedit. Ut quaerat quia ut dolore explicabo et voluptas error qui velit inventore. Rem quaerat repellat sit inventore unde vel dolore aspernatur! Qui dicta quidem ut quaerat atque aut earum voluptatem ut odit dignissimos hic autem atque hic eligendi cumque vel provident voluptatum.</p>
+                <p>Id nesciunt veritatis aut reprehenderit quae et magni consequatur vel ipsum fugit nam nostrum similique et aspernatur saepe. In velit consectetur sit voluptatem deleniti et reprehenderit culpa vel exercitationem adipisci sed numquam architecto. Vel earum consequatur qui modi ratione est dolorem adipisci eos aliquid incidunt. Et consequatur omnis quo voluptatem nemo et sunt sint id eius ratione nam distinctio eaque. Vel consequatur repellat non vero error et excepturi reprehenderit. Ut eaque distinctio ut voluptatibus perspiciatis ab porro sequi non modi Quis rem vero exercitationem id placeat inventore eos maiores tempore. Ex iste eligendi repudiandae sint ea magnam Quis et distinctio voluptas et repellendus enim? Non quia labore et quaerat impedit qui galisum ducimus id quasi magni ab ipsum itaque sit voluptate excepturi. Est iure asperiores cum facere voluptatem ut consequatur amet et dolorem odio.</p>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card mb-4 shadow" ng-repeat="item in [1,2]">
+                <img src="https://picsum.photos/300/100?random={{item}}" class="card-img-top" alt="image">
+                <div class="card-body">
+                  <h5>Sample Card {{ item }}</h5>
+                  <p>This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <!-- banner include -->
+        <div ng-include src="'./footer.html'"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+  </body>
+</html>

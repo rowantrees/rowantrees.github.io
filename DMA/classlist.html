@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="MainController">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="./img/kicker.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="./scss/theme.css" type="text/css" rel="Stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js" integrity="sha512-OboE6z4eMJ4Z58c77mLjwOChLo1ZoGMdBTd2ggt0PyheD8irXxmQBCqZkLPlz/rNC1f9kPsDuHRNuL2HKkm9FA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/app-w-classes.js"></script>
+    <title>Determination Martial Arts</title>
+  </head>
+  <body ng-cloak>
+
+    <!-- modal window for class detail -->
+    <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title pe-3" id="classModalLabel">{{classModalDetail.name}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row row-cols-2 g-3 mb-4">
+              <div class="col text-center">
+                <div class="text-uppercase text-muted fw-light">Date</div>
+                <div class="fw-bold">{{classModalDetail.start_date | date:'mediumDate'}} <span ng-if="classModalDetail.end_date">- {{classModalDetail.end_date | date:'mediumDate'}}</span></div>
+              </div>
+              <div class="col text-center">
+                <div class="text-uppercase text-muted fw-light">Time</div>
+                <div class="fw-bold text-capitalize"><span>{{classModalDetail.start_time}} - {{classModalDetail.end_time}}</span></div>
+              </div>
+              <div class="col text-center">
+                <div class="text-uppercase text-muted fw-light">Ages</div>
+                <div class="fw-bold">
+                  <span ng-if="classModalDetail.min_age">{{classModalDetail.min_age}}</span>
+                  <span ng-if="!classModalDetail.min_age">No min.</span>
+                  <span>-</span>
+                  <span ng-if="classModalDetail.max_age">{{classModalDetail.max_age}}</span>
+                  <span ng-if="!classModalDetail.max_age">No max.</span>
+                </div>
+              </div>
+              <div class="col text-center">
+                <div class="text-uppercase text-muted fw-light">Tuition</div>
+                <div class="fw-bold">{{ classModalDetail.tuition.fee | currency:'$':2 }} +HST</div>
+              </div>
+            </div>
+            <p ng-bind-html="classModalDetail.description | to_trusted"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            <div ng-if="!classModalDetail.online_reg_link" class="pt-2 small fw-light">Contact us to register</div>
+            <div ng-if="classModalDetail.online_reg_link">
+              <a ng-if="classModalDetail.openings.calculated_openings > 0" ng-href="{{classModalDetail.online_reg_link}}" target="_blank" class="btn btn-primary px-4 text-white">Register</a>
+              <a ng-if="classModalDetail.openings.calculated_openings <= 0" ng-href="{{classModalDetail.online_reg_link}}" target="_blank" class="btn btn-primary px-4">Wait List</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- banner include -->
+    <div ng-include src="'./banner.html'"></div>
+
+    <div class="content-wrapper">
+      <div class="body">
+        <div class="container">
+          <div class="h2 text-secondary">Class List</div>
+          <div class="fw-light">This example page demonstrates how to use the Jackrabbit Class API.  The page is created using AngularJS and Bootstrap in order to make it more visually appealing and functional, but the approach can be used in any framework with a bit of modification.</div>
+  
+            <!-- search and filter -->
+            <div class="row align-items-end g-4 pb-4 pt-5">
+              <div class="col-12 col-sm-6 col-lg-4">
+                <div class="">
+                  <label for="search" class="form-label mb-1 small fw-bold">Search</label>
+                  <input type="search" class="form-control" ng-model="searchparam" id="search" placeholder='Search by keyword...'>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-3">
+                <label for="classtype" class="form-label mb-1 small fw-bold">Class Type</label>
+                <select ng-model="classtype" class="form-select" id="">
+                  <option value="">Any Regular Class</option>
+                  <option value="Tae Kwon Do">Tae Kwon Do</option>
+                  <option value="Fitness Kickboxing">Fitness Kickboxing</option>
+                  <option value="Adaptive">Adaptive</option>
+                  <option value="Wing Chun">Wing Chun</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-lg-2">
+                <label for="classtype" class="form-label mb-1 small fw-bold">Age</label>
+                <div class="input-group">
+                  <input type="number" ng-model="age" class="form-control" placeholder="Age..." aria-label="Age..." aria-describedby="age-addon" />
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="age-addon">years</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-sm-6 col-lg-3">
+                <!-- <label class="form-label mb-1 small fw-bold">Layout</label> -->
+                <ul class="nav nav-pills justify-content-end mb-0" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link small active" id="pills-table-tab" data-bs-toggle="pill" data-bs-target="#pills-table" type="button" role="tab" aria-controls="pills-table" aria-selected="false"><i class="fa-solid fa-bars me-1"></i>Table</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link small" id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid" type="button" role="tab" aria-controls="pills-grid" aria-selected="true"><i class="fa-solid fa-grip me-1"></i>Grid</button>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-9 pt-2">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['mon']" id="Monday" name="Monday" />
+                      <label class="form-check-label" for="Monday">Mon<span class="d-none d-xl-inline">day</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['tue']" id="Tuesday" name="Tuesday" />
+                      <label class="form-check-label" for="Tuesday">Tue<span class="d-none d-xl-inline">sday</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['wed']" id="Wednesday" name="Wednesday" />
+                      <label class="form-check-label" for="Wednesday">Wed<span class="d-none d-xl-inline">nesday</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['thu']" id="Thursday" name="Thursday" />
+                      <label class="form-check-label" for="Thursday">Thu<span class="d-none d-xl-inline">rsday</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['fri']" id="Friday" name="Friday" />
+                      <label class="form-check-label" for="Friday">Fri<span class="d-none d-xl-inline">day</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['sat']" id="Saturday" name="Saturday" />
+                      <label class="form-check-label" for="Saturday">Sat<span class="d-none d-xl-inline">urday</span></label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" ng-model="dayFilters['sun']" id="Sunday" name="Sunday" />
+                      <label class="form-check-label" for="Sunday">Sun<span class="d-none d-xl-inline">day</span></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <div ng-init="getClasses('Regular Classes', '', '');" ng-controller="ClassController">
+            <!-- while waiting for classes... -->
+            <div ng-if="requestingclassdata" class="py-4 text-center"><i class="fas fa-spinner fa-pulse me-2"></i>Getting class data...</div>
+    
+            <!-- once classes are returned -->
+            <div ng-if="!requestingclassdata">
+    
+              <!-- if zero classes are returned once request is complete -->
+              <div ng-show="classes.length == 0" class="text-danger">No classes found</div>
+    
+              <!-- if one or more classes are returned -->
+              <div ng-show="classes.length > 0">
+                <div>
+                  <div ng-if="results.length < 1" class="fw-light pt-4 text-center"><i class="fa-solid fa-circle-exclamation me-1"></i>No matches found. Try modifying your filters to find other classes.</div>
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade" id="pills-grid" role="tabpanel" aria-labelledby="pills-grid-tab" tabindex="0">
+                      <!-- grid layout -->
+                      <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 pb-5">
+                        <div class="col" ng-repeat="class in results = (classes | orderBy:['min_age','start_date'] | filter:searchparam | filter:filterAge | filter:filterDay | filter:{category2:classtype})">
+                          <div class="card shadow h-100">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                <div class="h6" ng-if="class.name">{{class.name}}</div>
+                                <div>
+                                  <!-- open modal window for class detail -->
+                                  <button type="button" class="btn btn-link p-0" ng-click="setClassModal(class)" data-bs-toggle="modal" data-bs-target="#classModal">
+                                    <i class="fa-solid fa-circle-info fa-lg"></i>
+                                  </button>
+                                </div>
+                              </div>
+                              <div class="small">
+                                <div ng-if="class.start_date" class="">{{class.start_date | date:'mediumDate'}} <span ng-if="class.end_date">- {{class.end_date | date:'mediumDate'}}</span></div>
+                                <div ng-if="class.meeting_days.daylist" class="text-capitalize"><span>{{class.start_time}} - {{class.end_time}}</span></div>
+                                <div ng-if="class.min_age">Ages {{class.min_age}} - 
+                                  <span ng-if="class.min_age">{{class.min_age}}</span>
+                                  <span ng-if="!class.min_age">No min.</span>
+                                  <span>-</span>
+                                  <span ng-if="class.max_age">{{class.max_age}}</span>
+                                  <span ng-if="!class.max_age">No max.</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="px-3 pb-3">
+                              <hr>
+                              <div class="d-flex justify-content-end align-items-center">
+                                <div class="pe-3">
+                                  <div ng-if="class.tuition.fee" class="d-flex justify-content-end align-items-end">
+                                    <div class="fw-bold">{{ class.tuition.fee | currency:'$':2 }}</div>
+                                    <div class="fw-light small ms-1">+HST</div>
+                                  </div>
+                                  <div ng-if="!class.tuition.fee" class="fw-light small">Contact us for pricing</div>
+                                </div>
+                                <div>
+                                  <div ng-if="!class.online_reg_link" class="pt-2 small fw-light">Contact us to register</div>
+                                  <div ng-if="class.online_reg_link">
+                                    <a ng-if="class.openings.calculated_openings > 0" ng-href="{{class.online_reg_link}}" target="_blank" class="btn btn-primary btn-sm px-3 text-white">Register</a>
+                                    <a ng-if="class.openings.calculated_openings <= 0" ng-href="{{class.online_reg_link}}" target="_blank" class="btn btn-primary btn-sm px-3">Wait List</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="pills-table" role="tabpanel" aria-labelledby="pills-table-tab" tabindex="0">
+                      <!-- table layout -->
+                      <div class="table-responsive-md">
+                        <table class="table table-striped mb-5">
+                          <tbody>
+                            <tr ng-repeat="class in results = (classes | orderBy:['start_date','min_age'] | filter:searchparam | filter:filterAge | filter:filterDay | filter:{category2:classtype})">
+                              <td class="w-100">
+                                <div class="fw-bold">{{class.name}}
+                                  <!-- open modal window for class detail -->
+                                  <button type="button" class="btn btn-link p-0 ms-1" ng-click="setClassModal(class)" data-bs-toggle="modal" data-bs-target="#classModal">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                  </button>
+                                </div>
+                                <div class="fw-light">Ages 
+                                  <span ng-if="class.min_age">{{class.min_age}}</span>
+                                  <span ng-if="!class.min_age">No min.</span>
+                                  <span>-</span>
+                                  <span ng-if="class.max_age">{{class.max_age}}</span>
+                                  <span ng-if="!class.max_age">No max.</span>
+                                </div>
+                                <div class="collapse" id="collapseExample{{$index}}">
+                                  <div ng-if="class.description" class="small fw-light" ng-bind-html="class.description | to_trusted"></div>
+                                </div>
+                              </td>
+                              <td class="fw-light text-nowrap">
+                                <div>{{class.start_date | date:'mediumDate'}} <span ng-if="class.end_date">- {{class.end_date | date:'mediumDate'}}</span></div>
+                                <div>{{class.start_time}} - {{class.end_time}}</div>
+                              </td>
+                              <td class="text-end text-nowrap">
+                                <div ng-if="!class.online_reg_link" class="pt-2 small fw-light">Contact us to register</div>
+                                <div ng-if="class.online_reg_link">
+                                  <a ng-if="class.openings.calculated_openings > 0" ng-href="{{class.online_reg_link}}" target="_blank" class="btn btn-primary btn-sm px-3 text-nowrap text-white">Register</a>
+                                  <a ng-if="class.openings.calculated_openings <= 0" ng-href="{{class.online_reg_link}}" target="_blank" class="btn btn-primary btn-sm px-3 text-nowrap">Wait List</a>
+                                </div>
+                                <div ng-if="class.tuition.fee">
+                                  <span class="">{{ class.tuition.fee | currency:'$':2 }}</span>
+                                  <span class="fw-light tiny">+ HST</span>
+                                </div>
+                                <div ng-if="!class.tuition.fee" class="fw-light small">Contact for pricing</div>                  
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <!-- <div class="py-5">
+            <hr>
+          </div>
+        
+          <div ng-init="getClasses('Camp', 'Recreational Gymnastics', '')" ng-controller="ClassController">
+            <div ng-include="'./_list-basic.html'" ng-init="brandColor='danger'"></div>
+          </div>
+    
+          <div class="py-5">
+            <hr>
+          </div>
+    
+          <div ng-init="getClasses('Dance', 'Recreational', 'Hip Hop')" ng-controller="ClassController">
+            <div ng-include="'./_list-byday.html'" ng-init="brandColor='info'"></div>
+          </div> -->
+          
+        </div>
+      </div>
+      <div class="footer">
+        <!-- banner include -->
+        <div ng-include src="'./footer.html'"></div>
+      </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+  </body>
+</html>
