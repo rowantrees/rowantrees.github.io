@@ -66,7 +66,7 @@
       <div class="body">
         <div class="container">
           <div class="h2 text-secondary">Class List</div>
-          <div class="fw-light">This example page demonstrates how to use the Jackrabbit Class API.  The page is created using AngularJS and Bootstrap in order to make it more visually appealing and functional, but the approach can be used in any framework with a bit of modification.</div>
+          <div class="fw-light">Below you can search for classes, either to register or get yourself on a waitlist!</div>
   
             <!-- search and filter -->
             <div class="row align-items-end g-4 pb-4 pt-5">
@@ -95,7 +95,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col col-sm-6 col-lg-3">
+              <div class="col col-sm-6 col-lg-2">
                 <!-- <label class="form-label mb-1 small fw-bold">Layout</label> -->
                 <ul class="nav nav-pills justify-content-end mb-0" id="pills-tab" role="tablist">
                   <li class="nav-item" role="presentation">
@@ -106,7 +106,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-12 col-lg-9 pt-2">
+              <div class="col-12 col-lg-7 pt-2">
                 <div class="row">
                   <div class="col">
                     <div class="form-check">
@@ -132,25 +132,31 @@
                       <label class="form-check-label" for="Thursday">Thu<span class="d-none d-xl-inline">rsday</span></label>
                     </div>
                   </div>
-                  <div class="col">
+<!--                  <div class="col">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" ng-model="dayFilters['fri']" id="Friday" name="Friday" />
                       <label class="form-check-label" for="Friday">Fri<span class="d-none d-xl-inline">day</span></label>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" ng-model="dayFilters['sat']" id="Saturday" name="Saturday" />
                       <label class="form-check-label" for="Saturday">Sat<span class="d-none d-xl-inline">urday</span></label>
                     </div>
                   </div>
-                  <div class="col">
+<!--                  <div class="col">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" ng-model="dayFilters['sun']" id="Sunday" name="Sunday" />
                       <label class="form-check-label" for="Sunday">Sun<span class="d-none d-xl-inline">day</span></label>
                     </div>
-                  </div>
+                  </div>-->
                 </div>
+              </div>
+              <div class="col col-sm-6 col-lg-4 nav nav-pills justify-content-end mb-0 ">
+                  <div class="form-check">
+                    <label class="form-check-label" for="Waitlist">Show full classes?</label>
+                    <input class="form-check-input" type="checkbox" ng-model="waitlistFilter" id="Waitlist" name="Waitlist" />
+                  </div>
               </div>
             </div>
 
@@ -174,7 +180,7 @@
                     <div class="tab-pane fade" id="pills-grid" role="tabpanel" aria-labelledby="pills-grid-tab" tabindex="0">
                       <!-- grid layout -->
                       <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 pb-5">
-                        <div class="col" ng-repeat="class in results = (classes | orderBy:['min_age','start_date'] | filter:searchparam | filter:filterAge | filter:filterDay | filter:{category2:classtype})">
+                        <div class="col" ng-repeat="class in results = (classes | orderBy:['min_age','start_date'] | filter:searchparam | filter:filterAge| filter:filterWait | filter:filterDay | filter:{category2:classtype})">
                           <div class="card shadow h-100">
                             <div class="card-body">
                               <div class="d-flex justify-content-between">
@@ -226,7 +232,7 @@
                       <div class="table-responsive-md">
                         <table class="table table-striped mb-5">
                           <tbody>
-                            <tr ng-repeat="class in results = (classes | orderBy:['start_date','min_age'] | filter:searchparam | filter:filterAge | filter:filterDay | filter:{category2:classtype})">
+                            <tr ng-repeat="class in results = (classes | orderBy:['start_date','min_age'] | filter:searchparam | filter:filterAge | filter:filterWait | filter:filterDay | filter:{category2:classtype})">
                               <td class="w-100">
                                 <div class="fw-bold">{{class.name}}
                                   <!-- open modal window for class detail -->

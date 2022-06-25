@@ -46,6 +46,7 @@ myApp.controller("MainController", function ($scope, $http, serviceLocalStorage)
     sat: true,
     sun: true,
   };
+
   $scope.filterDay = function(item){
     const entries = Object.entries($scope.dayFilters);
     for (const entry of entries) {
@@ -54,6 +55,18 @@ myApp.controller("MainController", function ($scope, $http, serviceLocalStorage)
           return item;
         }
       }
+    }
+  };
+
+  $scope.waitlistFilter = false;
+
+
+  $scope.filterWait = function(item) {
+    console.log($scope.waitlistFilter);
+    const wList = $scope.waitlistFilter;
+
+    if (item.openings.calculated_openings > 0 || wList){
+      return  item;
     }
   };
 
@@ -155,6 +168,18 @@ myApp.filter("to_trusted", [
     };
   },
 ]);
+
+myApp.filter("waitlistFilter", function () {
+  return function (items, filterWait) {
+    var result = [];
+      angular.forEach(items, function (item) {
+        if (item.openings.calculated_openings > 0 || wList) {
+          result.push(item);
+        }
+      });
+    return result;
+  };
+});
 
 myApp.filter("dayFilter", function () {
   return function (items, filterDay) {
