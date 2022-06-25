@@ -76,6 +76,7 @@ myApp.controller("ClassController", function ($scope, $http) {
         Cat1: cat1,
         Cat2: cat2,
         Cat3: cat3,
+        ShowClosed: 1,
       },
     };
     $http(req).then(
